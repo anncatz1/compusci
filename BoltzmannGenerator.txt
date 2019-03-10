@@ -1,0 +1,55 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Thermodynamics
+{
+    public class BoltzmannGenerator : RandomGenerator
+    {
+        private readonly double mass;
+        private readonly double temp;
+        private readonly double minSpeed;
+        private readonly double maxSpeed;
+        const double boltzmannConst = 1.28e-23;
+
+        public BoltzmannGenerator(ParticleContainer cont, double mass, double temp, double minSpeed, double maxSpeed) : 
+            base(cont)
+        {
+            this.mass = mass;
+            this.temp = temp;
+            this.minSpeed = minSpeed;
+            this.maxSpeed = maxSpeed;
+        }
+
+        protected override double GetSpeed(ParticleInfo info)
+        {
+            double velocity = RandomGen.NextDouble()*maxSpeed;
+            double boltzmannValue = 4 * Math.PI * Math.Pow(info.Mass / (2 * Math.PI * boltzmannConst * temp), 3 / 2) * Math.Pow(velocity, 2) * Math.Pow(Math.E, (-info.Mass * velocity * velocity) / (2 * boltzmannConst * temp));
+            double maxBolt = MaxProbabilityBoltzmann(info);
+            double prob = RandomGen.NextDouble()*maxBolt;
+            while (boltzmannValue < prob)
+            {
+                velocity = RandomGen.NextDouble() * maxSpeed;
+                boltzmannValue = 4 * Math.PI * Math.Pow(info.Mass / (2 * Math.PI * boltzmannConst * temp), 3 / 2) * Math.Pow(velocity, 2) * Math.Pow(Math.E, (-info.Mass * velocity * velocity) / (2 * boltzmannConst * temp));
+                prob = RandomGen.NextDouble()*maxBolt;
+            }
+            return velocity;
+        }
+
+        public double MaxProbabilityBoltzmann(ParticleInfo info)
+        {
+            double boltzmannValue = 0; double maxBolt = 0;
+            for (int i = 0;i < maxSpeed; i++)
+            {
+                boltzmannValue = 4 * Math.PI * Math.Pow(info.Mass / (2 * Math.PI * boltzmannConst * temp), 3 / 2) * Math.Pow(i, 2) * Math.Pow(Math.E, (-info.Mass * i * i) / (2 * boltzmannConst * temp));
+                if (boltzmannValue > maxBolt)
+                {
+                    maxBolt = boltzmannValue;
+                }
+            }
+            return maxBolt;
+        }
+    }
+}
