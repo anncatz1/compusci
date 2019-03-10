@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DongUtility", "DongUtility\DongUtility.csproj", "{7BEAE516-16B9-4CBB-8047-D92DCDC817C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interference", "Interference\Interference.csproj", "{91E5E079-24DB-4215-BDF8-0651D5E3C197}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7BEAE516-16B9-4CBB-8047-D92DCDC817C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BEAE516-16B9-4CBB-8047-D92DCDC817C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BEAE516-16B9-4CBB-8047-D92DCDC817C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BEAE516-16B9-4CBB-8047-D92DCDC817C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91E5E079-24DB-4215-BDF8-0651D5E3C197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91E5E079-24DB-4215-BDF8-0651D5E3C197}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91E5E079-24DB-4215-BDF8-0651D5E3C197}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91E5E079-24DB-4215-BDF8-0651D5E3C197}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {344FE21E-65B1-49C6-967C-386B13217BC5}
+	EndGlobalSection
+EndGlobal
