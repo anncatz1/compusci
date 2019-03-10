@@ -38,10 +38,12 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -58,8 +60,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Thermodynamics\ThermodynamicsDriver.cs" />
-    <Compile Include="Thermodynamics\ThermodynamicsVisualization.cs" />
+    <Compile Include="EngineAdapter.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KinematicsDriver.cs" />
+    <Compile Include="VectorAdapter.cs" />
     <Page Include="FullVisualizer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -75,6 +84,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProjectileAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -88,6 +98,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -101,6 +114,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CompuSci\Projectile Motion\Projectile_Motion.csproj">
+      <Project>{db5a7e71-002d-483c-bf0e-579e2e7fa269}</Project>
+      <Name>Projectile_Motion</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CompuSci\Utilities\Utilities.csproj">
+      <Project>{73cef7f1-9509-480d-99e2-e1de39aa60c7}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DongUtility\DongUtility.csproj">
       <Project>{7beae516-16b9-4cbb-8047-d92dcdc817c9}</Project>
       <Name>DongUtility</Name>
@@ -109,19 +130,10 @@
       <Project>{e6a089ae-97da-46b0-897c-bf90445a7345}</Project>
       <Name>GraphControl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Kinematics\Kinematics.csproj">
-      <Project>{dec09596-d2a2-4305-91a4-18c7a9bb7f71}</Project>
-      <Name>Kinematics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thermodynamics\Thermodynamics.csproj">
-      <Project>{9d317267-29bc-48fc-bc3a-89ddea5d97ce}</Project>
-      <Name>Thermodynamics</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VisualizerControl\VisualizerControl.csproj">
       <Project>{ed8afacf-ab3c-4510-9fdd-985fc10e3a70}</Project>
       <Name>VisualizerControl</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
