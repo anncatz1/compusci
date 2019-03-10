@@ -64,6 +64,17 @@ namespace Utilities
             return v1 * scalar;
         }
 
+        public bool EqualsV(Vector v2)
+        {
+            if (X == v2.X && Y == v2.Y && Z == v2.Z)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         //will allow you to print the vector
         //we can just write out Console.WriteLine(v1) after this!
         public override string ToString()
@@ -71,19 +82,19 @@ namespace Utilities
             return "(" + X + ", " + Y + ", " + Z + ")"; 
         }
 
-        static public Vector unitVector(Vector v1)
+        public Vector UnitVector(Vector v1)
         {
             Double mag = v1.Magnitude;
             Vector unitV = v1 / mag;
             return unitV;
         }
 
-        static public Double dotProduct(Vector v1, Vector v2)
+        public Double DotProduct(Vector v1, Vector v2)
         {
-            return v1.X * v2.X + v1.Y + v2.Y;
+            return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
         }
 
-        static public Vector crossProduct(Vector v1, Vector v2)
+        public Vector CrossProduct(Vector v1, Vector v2)
         {
             Vector crossV = new Vector(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z*v2.X-v1.X*v2.Z, v1.X*v2.Y-v1.Y*v2.X);
             return crossV;
