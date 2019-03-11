@@ -20,6 +20,30 @@ namespace Thermodynamics
         /// </summary>
         public ParticleInfo Info { get; set; }
 
+        public Vector Momentum
+        {
+            get
+            {
+                return Info.Mass * Velocity;
+            }
+            set
+            {
+                Velocity = value / Info.Mass;
+            }
+        }
+
+        public double KineticEnergy
+        {
+            get
+            {
+                return .5 * Info.Mass * Velocity.MagnitudeSquared;
+            }
+            set
+            {
+                Velocity = Velocity.UnitVector() * Math.Sqrt(2 * value / Info.Mass);
+            }
+        }
+
         public Particle(Vector position, Vector velocity, ParticleInfo info)
         {
             Position = position;

@@ -28,6 +28,11 @@ namespace Thermodynamics
         public ParticleDictionary Dictionary { get; } = new ParticleDictionary();
 
         /// <summary>
+        /// If true, allows particles to loop around in the x direction, useful for constant flow simulations
+        /// </summary>
+        public bool LoopX { get; set; } = false;
+
+        /// <summary>
         /// Access to the random generator
         /// </summary>
         static protected Random Random { get { return RandomGenerator.RandomGen; } }
@@ -37,6 +42,19 @@ namespace Thermodynamics
             Size = new Vector(xSize, ySize, zSize);
         }
 
+        public List<Particle> ParticlesToAdd { get; } = new List<Particle>();
+        public List<Particle> ParticlesToRemove { get; } = new List<Particle>();
+
+        public void AddParticle(Particle part)
+        {
+            ParticlesToAdd.Add(part);
+        }
+
+        public void RemoveParticle(Particle part)
+        {
+            ParticlesToRemove.Add(part);
+        }
+
         /// <summary>
         /// Adds a particle directly
         /// Not for general use; hence, it is protected
@@ -44,6 +62,16 @@ namespace Thermodynamics
         protected virtual void AddParticleDirectly(Particle part)
         {
             Particles.Add(part);
+        }
+
+        /// <summary>
+        /// Removes a particle directly
+        /// Not for general use; hence, it is protected
+        /// </summary>
+        /// <param name="part"></param>
+        protected virtual void RemoveParticleDirectly(Particle part)
+        {
+            Particles.Remove(part);
         }
 
         /// <summary>
@@ -83,12 +111,27 @@ namespace Thermodynamics
         /// </summary>
         public virtual void Update(double deltaTime)
         {
-            foreach (Particle proj in Particles)
+            ParticlesToAdd.Clear();
+            ParticlesToRemove.Clear();
+
+            Setup();
+
+            foreach (Particle part in Particles)
             {
-                proj.Update(deltaTime);
-                CheckParticle(proj);
+                part.Update(deltaTime);
+                ParticleUpdate(part);
+                CheckParticle(part);
             }
+
+            ParticlesToAdd.ForEach((x) => AddParticleDirectly(x));
+            ParticlesToRemove.ForEach((x) => RemoveParticleDirectly(x));
         }
+
+        protected virtual void ParticleUpdate(Particle part)
+        { }
+
+        protected virtual void Setup()
+        { }
 
         /// <summary>
         /// A function that extracts a specific property of a particle
@@ -115,19 +158,33 @@ namespace Thermodynamics
         /// Make sure the particle lies within the bounds of the box
         /// Reflect it back if it is not
         /// </summary>
-        private void CheckParticle(Particle particle)
+        protected virtual void CheckParticle(Particle particle)
         {
             Vector newVec = particle.Position;
             if (particle.Position.X < 0 || particle.Position.X > Size.X)
             {
-                particle.Velocity = new Vector(-particle.Velocity.X, particle.Velocity.Y, particle.Velocity.Z);
-                if (particle.Position.X < 0)
+                if (LoopX)
                 {
-                    newVec.X = 0;
+                    if (particle.Position.X < 0)
+                    {
+                        newVec.X += Size.X;
+                    }
+                    else if (particle.Position.X > Size.X)
+                    {
+                        newVec.X -= Size.X;
+                    }
                 }
-                if (particle.Position.X > Size.X)
+                else
                 {
-                    newVec.X = Size.X;
+                    particle.Velocity = new Vector(-particle.Velocity.X, particle.Velocity.Y, particle.Velocity.Z);
+                    if (particle.Position.X < 0)
+                    {
+                        newVec.X = 0;
+                    }
+                    else if (particle.Position.X > Size.X)
+                    {
+                        newVec.X = Size.X;
+                    }
                 }
             }
             if (particle.Position.Y < 0 || particle.Position.Y > Size.Y)
@@ -137,7 +194,7 @@ namespace Thermodynamics
                 {
                     newVec.Y = 0;
                 }
-                if (particle.Position.Y > Size.Y)
+                else if (particle.Position.Y > Size.Y)
                 {
                     newVec.Y = Size.Y;
                 }
@@ -149,7 +206,7 @@ namespace Thermodynamics
                 {
                     newVec.Z = 0;
                 }
-                if (particle.Position.Z > Size.Z)
+                else if (particle.Position.Z > Size.Z)
                 {
                     newVec.Z = Size.Z;
                 }
